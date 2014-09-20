@@ -26,6 +26,6 @@ describe "controllers", ->
 
     it 'should initialize $rootScope', ->
 
-      createController 'FirstController'
+      createController 'CanvasController'
 
       expect($scope.zinger).toEqual 'bringer'

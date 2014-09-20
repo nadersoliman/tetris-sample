@@ -1,10 +1,9 @@
 angular.module('tetris.controllers', [])
 
-.controller('FirstController', [
+.controller('CanvasController', [
     '$scope'
-    '$rootScope'
 
-    ($scope, $rootScope)->
+    ($scope)->
 
       $scope.zinger = 'bringer'
 ])
