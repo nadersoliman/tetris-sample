@@ -7,9 +7,15 @@
   <link rel="stylesheet" href="/css/styles.css">
   <!-- endbuild -->
 </head>
-<body ng-controller="TetrisController as tetris">
+<body ng-controller="TetrisController as tetris" ng-keydown="tetris.keyDown($event)">
 
-  <pre>{{tetris.canvas.toString()}}</pre>
+  <pre>{{tetris.canvas.linesString}}</pre>
+
+  <pre>
+    Piece: {{tetris.world.movingPieces[0].name}}
+    x: {{tetris.world.movingPieces[0].x}}
+    y: {{tetris.world.movingPieces[0].y}}
+  </pre>
 
   <!-- TAG_CDN -->
   <!-- CDN Files Go Here: see vendor.config.coffee to add anymore -->

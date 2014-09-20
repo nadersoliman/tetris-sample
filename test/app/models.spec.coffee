@@ -45,8 +45,8 @@ describe "models", ->
           lines.push R(config.empty, Canvas.WIDTH)
 
         expect(lines.length).toEqual config.height + 2*config.gutter
-        canvasString = canvas.toString()
-        expect(canvasString).toEqual lines.join '\n'
+        canvas.refresh()
+        expect(canvas.linesString).toEqual lines.join '\n'
 
   describe 'World', ->
 
@@ -63,8 +63,8 @@ describe "models", ->
       inject (World, Canvas, config)->
 
         canvas = new Canvas
-        world = new World
-        world.drawTo canvas
+        world = new World canvas
+        world.clear()
 
         lines = canvas.lines
         expect(lines.length).toEqual config.height + 2*config.gutter
@@ -76,12 +76,191 @@ describe "models", ->
         for x in [config.gutter+world.height..Canvas.height-1]
           expect(lines[x]).toEqual R(config.empty, Canvas.WIDTH)
 
+    it 'should add new piece if moving pieces is empty', inject (World, Canvas, Piece)->
+
+      canvas = new Canvas
+      world = new World canvas
+
+      expect(world.movingPieces).toEqual []
+      world.movePieces()
+      expect(world.movingPieces).toEqual [jasmine.any Piece]
+
   describe 'Piece', ->
 
     it 'should have proper representation of a generic piece', inject (Piece)->
 
       piece = new Piece
-      expect(piece.x).toBe null
-      expect(piece.y).toBe null
-      expect(piece.body).toBe null
+      expect(piece.x).toBeGreaterThan 5
+      expect(piece.x).toBeLessThan 23
+      expect(piece.y).toBe 0
+      expect(piece.ang).toEqual jasmine.any Number
+      expect(piece.positions).toBe null
+
+    it 'should adhere to canvas while moving sideways', inject (SquarePiece, Canvas, World) ->
+      canvas = new Canvas
+      world = new World canvas
+      world.clear()
+
+      piece = new SquarePiece canvas
+      piece.x = 0
+      piece.y = 0
+
+      moved = piece.moveLeft()
+      expect(piece.x).toBe 0
+      expect(moved).toBe false
+
+      moved = piece.moveRight()
+      expect(piece.x).toBe 1
+      expect(moved).toBe true
+
+      moved = piece.moveRight()
+      expect(piece.x).toBe 2
+      expect(moved).toBe true
+
+      piece.x = Canvas.WIDTH - 4
+      expect(piece.x).toBe 24
+      moved = piece.moveRight()
+      expect(piece.x).toBe 24
+      expect(moved).toBe false
+
+      moved = piece.moveLeft()
+      expect(piece.x).toBe 23
+      expect(moved).toBe true
+
+      moved = piece.moveLeft()
+      expect(piece.x).toBe 22
+      expect(moved).toBe true
+
+    it 'should update angle cyclically', inject (SquarePiece, Canvas, World) ->
+      canvas = new Canvas
+      world = new World canvas
+      world.clear()
+
+      piece = new SquarePiece canvas
+
+      expect(piece.ang).toBe 0
+
+      rotated = piece.rotateLeft()
+      expect(piece.ang).toBe 90
+      expect(rotated).toBe true
+
+      rotated = piece.rotateLeft()
+      expect(piece.ang).toBe 180
+      expect(rotated).toBe true
+
+      rotated = piece.rotateLeft()
+      expect(piece.ang).toBe 270
+      expect(rotated).toBe true
+
+      rotated = piece.rotateLeft()
+      expect(piece.ang).toBe 0
+      expect(rotated).toBe true
+
+      rotated = piece.rotateRight()
+      expect(piece.ang).toBe 270
+      expect(rotated).toBe true
+
+      rotated = piece.rotateRight()
+      expect(piece.ang).toBe 180
+      expect(rotated).toBe true
+
+      rotated = piece.rotateRight()
+      expect(piece.ang).toBe 90
+      expect(rotated).toBe true
+
+      rotated = piece.rotateRight()
+      expect(piece.ang).toBe 0
+      expect(rotated).toBe true
+
+    it 'should not rotate or move, for edge cases', inject (LPiece, Canvas, World) ->
+      canvas = new Canvas
+      world = new World canvas
+      world.clear()
+
+      piece = new LPiece canvas
+      piece.x = 4
+      piece.y = 4
+
+      moved = piece.moveRight()
+      expect(moved).toBe true
+
+      moved = piece.moveLeft()
+      expect(moved).toBe true
+
+      moved = piece.moveLeft()
+      expect(moved).toBe false
+
+      moved = piece.rotateLeft()
+      expect(moved).toBe false
+
+      moved = piece.rotateRight()
+      expect(moved).toBe true
+
+
+    it 'should adhere to canvas while moving down', inject (SquarePiece, Canvas, World) ->
+      canvas = new Canvas
+      world = new World canvas
+      world.clear()
+
+      piece = new SquarePiece canvas
+      piece.x = 0
+      piece.y = 0
+
+      piece.moveDown()
+      expect(piece.y).toBe 1
+
+      piece.moveDown()
+      expect(piece.y).toBe 2
+
+      piece.y = Canvas.WIDTH - 4
+      expect(piece.y).toBe 24
+      piece.moveDown()
+      expect(piece.y).toBe(24)
+
+
+    it 'should draw to canvas', inject (LPiece, Canvas, World, R, config) ->
+      canvas = new Canvas
+      world = new World canvas
+      world.clear()
+
+      piece = new LPiece canvas
+      piece.x = 4
+      piece.y = 4
+      piece.draw()
+
+      expect(canvas.lines[4].length).toEqual 28
+      expect(canvas.lines[4]).toEqual '....**' + R(config.empty, 17) + '*....'
+      expect(canvas.lines[5].length).toEqual 28
+      expect(canvas.lines[5]).toEqual '....**' + R(config.empty, 17) + '*....'
+      expect(canvas.lines[6].length).toEqual 28
+      expect(canvas.lines[6]).toEqual '....***' + R(config.empty, 16) + '*....'
+      expect(canvas.lines[7].length).toEqual 28
+      expect(canvas.lines[7]).toEqual '....*' + R(config.empty, 18) + '*....'
+
+      world.clear()
+      piece.moveDown()
+      piece.draw()
+      expect(canvas.lines[5].length).toEqual 28
+      expect(canvas.lines[5]).toEqual '....**' + R(config.empty, 17) + '*....'
+      expect(canvas.lines[6].length).toEqual 28
+      expect(canvas.lines[6]).toEqual '....**' + R(config.empty, 17) + '*....'
+      expect(canvas.lines[7].length).toEqual 28
+      expect(canvas.lines[7]).toEqual '....***' + R(config.empty, 16) + '*....'
+      expect(canvas.lines[8].length).toEqual 28
+      expect(canvas.lines[8]).toEqual '....*' + R(config.empty, 18) + '*....'
+
+
+
+  describe 'SquarePiece', ->
+
+    it 'should have proper representation of a squar piece', inject (SquarePiece)->
+
+      piece = new SquarePiece
+#      expect(piece.x).toBe null
+#      expect(piece.y).toBe null
+#      expect(piece.body).toEqual jasmine.any Array
+#      expect(piece.body.length).toBe 4
+#      for x in [0..3]
+#        expect(piece.body[0]).toEqual jasmine.any String
+#        expect(piece.body[0].length).toBe 4
 
