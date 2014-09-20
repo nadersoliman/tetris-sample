@@ -85,6 +85,18 @@ describe "models", ->
       world.movePieces()
       expect(world.movingPieces).toEqual [jasmine.any Piece]
 
+    it 'should respond with fail true', inject (World, Canvas, config)->
+      canvas = new Canvas
+      world = new World canvas
+
+      expect(world.failed()).toBe false
+
+      line = canvas.lines[2]
+      line = line.substr(0, 10) + config.full + line.substr(10 + 1)
+      canvas.lines[2] = line
+
+      expect(world.failed()).toBe true
+
   describe 'Piece', ->
 
     it 'should have proper representation of a generic piece', inject (Piece)->

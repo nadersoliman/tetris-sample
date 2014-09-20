@@ -9,13 +9,27 @@
 </head>
 <body ng-controller="TetrisController as tetris" ng-keydown="tetris.keyDown($event)">
 
-  <pre>{{tetris.canvas.linesString}}</pre>
+<pre>{{tetris.canvas.linesString}}</pre>
 
-  <pre>
-    Piece: {{tetris.world.movingPieces[0].name}}
-    x: {{tetris.world.movingPieces[0].x}}
-    y: {{tetris.world.movingPieces[0].y}}
-  </pre>
+<pre>Use: a to move piece to the left</pre>
+<pre>Use: d to move piece to the right</pre>
+<pre>Use: w to rotate piece counter clockwise</pre>
+<pre>Use: s to rotate piece clockwise</pre>
+
+<pre ng-show="!tetris.message">
+Piece: {{tetris.world.movingPieces[0].name}}
+x: {{tetris.world.movingPieces[0].x}}
+y: {{tetris.world.movingPieces[0].y}}
+</pre>
+
+<pre ng-show="!tetris.message">
+Actions Queue:
+  <pre ng-repeat="action in tetris.world.actionsQue">{{action}}</pre>
+</pre>
+
+<pre ng-show="tetris.message">
+{{tetris.message}}
+</pre>
 
   <!-- TAG_CDN -->
   <!-- CDN Files Go Here: see vendor.config.coffee to add anymore -->

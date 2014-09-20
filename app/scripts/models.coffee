@@ -103,9 +103,17 @@ angular.module('tetris.models', [])
       enqueAction: (action)->
         @actionsQue.push action
 
+      failed: ->
+        allPixels = []
+        for x in [0..config.gutter-1]
+          allPixels = allPixels.concat(@canvas.lines[x].split '')
+        empty = _.all allPixels, (p)-> p is config.empty
+        return not empty
+
       cycle: ->
         @clear()
         @drawReseted()
+        failed = @failed()
         while @actionsQue.length > 0
           action = @actionsQue.pop()
           #console.log 'applying action', action
@@ -117,6 +125,7 @@ angular.module('tetris.models', [])
         # drawing moving
         @drawReseted()
         @canvas.refresh()
+        return failed
 
     return World
 ])
@@ -194,7 +203,7 @@ angular.module('tetris.models', [])
               canvasLine = @canvas.lines[@y + dy]
               xIndex = @x + dx
               @canvas.lines[@y + dy] = canvasLine.substr(0, xIndex) +
-                position[dy][dx] + canvasLine.substr(xIndex + 1);
+                position[dy][dx] + canvasLine.substr(xIndex + 1)
 
 
 
@@ -325,8 +334,8 @@ angular.module('tetris.models', [])
             [C.empty, C.empty, C.empty, C.empty].join('')
           ]
           90: [
+            [C.empty, C.empty, C.empty, C.empty].join('')
             [C.full, C.full, C.full, C.empty].join('')
-            [C.empty, C.empty, C.full, C.empty].join('')
             [C.empty, C.empty, C.full, C.empty].join('')
             [C.empty, C.empty, C.empty, C.empty].join('')
           ]

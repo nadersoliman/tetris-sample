@@ -14,6 +14,6 @@ angular.module 'tetris', [
   width: 20
   height: 20
   gutter: 4
-  empty: '.'
+  empty: ' '
   full: '*'
 )

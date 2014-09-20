@@ -12,11 +12,14 @@ angular.module('tetris.controllers', ['tetris.models'])
       @world = new World @canvas
 
       @redraw = ->
-        @world.cycle()
-        me = @
-        $timeout ->
-          me.redraw()
-        , 500
+        failed = @world.cycle()
+        if not failed
+          me = @
+          $timeout ->
+            me.redraw()
+          , 700
+        else
+          @message = 'Well Done, Game Over !'
 
       @keyDown = ($event)->
         if $event.keyCode in [65, 97]
