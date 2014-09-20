@@ -1,8 +1,14 @@
-angular.module 'tetris', []
+angular.module 'tetris', [
+  'tetris.models'
+  'tetris.controllers'
+]
 
-.run(['$rootScope', ($rootScope)->
+.run([
+  '$rootScope'
 
-  $rootScope.hello = 'world'
+  ($rootScope)->
+
+    $rootScope.hello = 'world'
 ])
 .value('config',
   width: 20

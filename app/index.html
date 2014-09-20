@@ -7,31 +7,9 @@
   <link rel="stylesheet" href="/css/styles.css">
   <!-- endbuild -->
 </head>
-<body>
+<body ng-controller="TetrisController as tetris">
 
-  <pre ng-controller="CanvasController">
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    *                  *
-    ********************
-  </pre>
+  <pre>{{tetris.canvas.toString()}}</pre>
 
   <!-- TAG_CDN -->
   <!-- CDN Files Go Here: see vendor.config.coffee to add anymore -->

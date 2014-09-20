@@ -19,18 +19,18 @@ module.exports = (grunt)->
     watch:
       coffee:
         files: ['<%= config.appDir %>/scripts/**/*.coffee']
-        tasks: ['coffee:compile', 'index:local']
+        tasks: ['coffee:compile', 'index:server']
       livereload:
         options:
           livereload: config.reloadPort
         files: ['<%= config.appDir %>/**/*']
       html2js:
         files: ['<%= config.appDir %>/partials/**/*.html']
-        tasks: ['html2js:compile', 'index:local']
+        tasks: ['html2js:compile', 'index:server']
       less:
         files: ['<%= config.appDir %>/styles/**/*.less']
         tasks: ['less:compile']
-      index_local:
+      index_server:
         files: ['<%= config.appDir %>/index.html',
                 'vendor.config.coffee']
         tasks: ['index:server']
@@ -157,7 +157,7 @@ module.exports = (grunt)->
     The files will be resolved against ./.tmp where they are generated
 
     @target: can be one of build, server
-    @usecdn: can be usecdn, valid only for local target, default ''
+    @usecdn: can be usecdn, valid only for server target, default ''
     """
   , (target, usecdn)->
     fs = require('fs')

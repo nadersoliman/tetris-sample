@@ -1,10 +1,9 @@
-'use strict'
-
-describe "controllers", ->
+describe "tetris.controllers", ->
 
   beforeEach ->
     module 'tetris'
 
+    module 'tetris.models'
     module 'tetris.controllers'
 
   $rootScope = null
@@ -22,10 +21,11 @@ describe "controllers", ->
       _.extend injected, {'$scope' : $scope }
       $controller(ctrl, injected)
 
-  describe '$rootScope', ->
+  describe 'TetrisController', ->
 
-    it 'should initialize $rootScope', ->
+    it 'should initialize $scope', inject (World, Canvas)->
 
-      createController 'CanvasController'
+      createController 'TetrisController as tetris'
 
-      expect($scope.zinger).toEqual 'bringer'
+      expect($scope.tetris.world).toEqual jasmine.any World
+      expect($scope.tetris.canvas).toEqual jasmine.any Canvas

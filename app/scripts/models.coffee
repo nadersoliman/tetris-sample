@@ -1,10 +1,22 @@
 angular.module('tetris.models', [])
 
+.factory('R', [
+    ()->
+      (char, n)->
+        ###
+        repeats a character n times
+        ###
+        if not n
+          return ''
+        return Array(n+1).join(char)
+])
+
 
 .factory('Canvas', [
+    'R'
     'config'
 
-    (config) ->
+    (R, config) ->
       class Canvas
         @WIDTH: config.width + config.gutter*2
         @HEIGHT: config.height + config.gutter*2
@@ -18,7 +30,7 @@ angular.module('tetris.models', [])
         clear: ->
           @lines = []
           for x in [0..Canvas.HEIGHT-1]
-            @lines.push Array(Canvas.WIDTH+1).join(config.empty)
+            @lines.push R(config.empty, Canvas.WIDTH)
 
         toString: ->
           @lines.join '\n'
@@ -27,12 +39,18 @@ angular.module('tetris.models', [])
 ])
 
 .factory('World', [
+  'R'
   'config'
 
-  (config) ->
+  (R, config) ->
     class World
-      @EMPTY_LINE: "*#{Array(config.width - 1).join(config.empty)}*"
-      @BOTTOM_LINE: Array(config.width + 1).join(config.full)
+      @EMPTY_LINE: R(config.empty, config.gutter) + config.full +
+        R(config.empty, config.width-2) + config.full +
+        R(config.empty, config.gutter)
+
+      @BOTTOM_LINE: R(config.empty, config.gutter) + config.full +
+        R(config.full, config.width-2) + config.full +
+        R(config.empty, config.gutter)
 
       drawTo: (canvas) ->
         canvas.clear()

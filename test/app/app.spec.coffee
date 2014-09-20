@@ -1,6 +1,4 @@
-'use strict'
-
-describe "app", ->
+describe "tetris", ->
 
   beforeEach ->
     module 'tetris'

@@ -1,9 +1,24 @@
-angular.module('tetris.controllers', [])
+angular.module('tetris.controllers', ['tetris.models'])
 
-.controller('CanvasController', [
-    '$scope'
+.controller('TetrisController', [
+    'World'
+    'Canvas'
+    '$timeout'
 
-    ($scope)->
+    (World, Canvas, $timeout)->
 
-      $scope.zinger = 'bringer'
+      @world = new World
+      @canvas = new Canvas
+      @redraw = ->
+        @world.drawTo @canvas
+        me = @
+        $timeout ->
+          me.redraw()
+        , 500
+
+      @redraw()
+
+      return @
+
+
 ])
