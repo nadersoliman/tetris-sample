@@ -51,7 +51,7 @@ y: {{tetris.world.movingPieces[0].y}}
 </pre>
       <div ng-show="tetris.world.actionsQue.length > 0">
         <h4>Actions Queue:</h4>
-        <pre ng-repeat="action in tetris.world.actionsQue">{{action}}</pre>
+        <pre ng-repeat="action in tetris.world.actionsQue track by $index">{{action}}</pre>
       </div>
     </div>
   </div>
