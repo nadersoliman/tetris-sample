@@ -1,35 +1,76 @@
 <!DOCTYPE html>
 <html ng-app="tetris">
 <head lang="en">
-  <meta charset="UTF-8">
-  <title></title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AngularJS Tetris Sample</title>
   <!-- build:css(.tmp) css/app.css -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/bootswatch.css">
   <link rel="stylesheet" href="/css/styles.css">
   <!-- endbuild -->
 </head>
+
+
 <body ng-controller="TetrisController as tetris" ng-keydown="tetris.keyDown($event)">
 
-<pre>{{tetris.canvas.linesString}}</pre>
+<div class="container">
+  <div class="header">
+    <!--
+    <ul class="nav nav-pills pull-right">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    -->
+    <h3 class="text-muted">AngularJS Tetris Sample</h3>
+  </div>
 
-<pre>Use: a to move piece to the left</pre>
-<pre>Use: d to move piece to the right</pre>
-<pre>Use: w to rotate piece counter clockwise</pre>
-<pre>Use: s to rotate piece clockwise</pre>
-
+  <div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-4">
+      <h3>Key Map:</h3>
+      <ul>
+        <li>Move left: <strong>a</strong> or arrow left</li>
+        <li>Move right: <strong>d</strong> or arrow right</li>
+        <li>rotate clockwise: <strong>s</strong> or arrow down</li>
+        <li>rotate counter clockwise: <strong>w</strong> or arrow up</li>
+      </ul>
+    </div>
+    <div class="col-lg-4">
+      <h3>Tetris Game</h3>
+      <pre>{{tetris.canvas.linesString}}</pre>
+    </div>
+    <div class="col-lg-2" ng-show="!tetris.message">
+      <h3>Events</h3>
 <pre ng-show="!tetris.message">
 Piece: {{tetris.world.movingPieces[0].name}}
 x: {{tetris.world.movingPieces[0].x}}
 y: {{tetris.world.movingPieces[0].y}}
 </pre>
+      <div ng-show="tetris.world.actionsQue.length > 0">
+        <h4>Actions Queue:</h4>
+        <pre ng-repeat="action in tetris.world.actionsQue">{{action}}</pre>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-10" ng-show="tetris.message">
+      <div class="alert alert-success">{{tetris.message}} hello world</div>
+    </div>
+  </div>
+  </div>
 
-<pre ng-show="!tetris.message">
-Actions Queue:
-  <pre ng-repeat="action in tetris.world.actionsQue">{{action}}</pre>
-</pre>
+  <div class="footer">
+    <p>Using <a href="http://bootswatch.com/">Bootswatch</a></p>
+    <p><a href="mailto:nadersoliman@gmail.com">Nader Soliman</a> 2014</p>
+    <p><a href="https://github.com/nadersoliman/tetris-sample">On GitHub</a></p>
+  </div>
 
-<pre ng-show="tetris.message">
-{{tetris.message}}
-</pre>
+</div> <!-- /container -->
+
+
 
   <!-- TAG_CDN -->
   <!-- CDN Files Go Here: see vendor.config.coffee to add anymore -->

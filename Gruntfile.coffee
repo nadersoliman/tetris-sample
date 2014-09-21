@@ -79,7 +79,7 @@ module.exports = (grunt)->
       html: ['<%= config.buildDir %>/index.html']
       options:
         dest: '<%= config.buildDir %>'
-        staging: '<%= config.buildDir %>/'
+        staging: '<%= config.tmpDir %>/'
 
     usemin:
       html: '<%= config.buildDir %>/index.html'

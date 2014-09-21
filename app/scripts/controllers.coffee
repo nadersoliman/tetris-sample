@@ -22,16 +22,16 @@ angular.module('tetris.controllers', ['tetris.models'])
           @message = 'Well Done, Game Over !'
 
       @keyDown = ($event)->
-        if $event.keyCode in [65, 97]
+        if $event.keyCode in [65, 97, 37]
           @world.enqueAction 'moveLeft'
 
-        if $event.keyCode in [68, 100]
+        if $event.keyCode in [68, 100, 39]
           @world.enqueAction 'moveRight'
 
-        if $event.keyCode in [87, 119]
+        if $event.keyCode in [87, 119, 38]
           @world.enqueAction 'rotateLeft'
 
-        if $event.keyCode in [83, 115]
+        if $event.keyCode in [83, 115, 40]
           @world.enqueAction 'rotateRight'
 
         #console.log $event
