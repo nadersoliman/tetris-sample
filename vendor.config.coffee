@@ -18,9 +18,9 @@ module.exports =
       "bower_components/jquery/dist/jquery.js"
   ,
     external:
-      "https://maxcdn.bootstrapcdn.com/bootstrap/dist/js/bootstrap.min.js"
+      "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"
     notmin:
-      "https://maxcdn.bootstrapcdn.com/bootstrap/dist/js/bootstrap.js"
+      "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"
     local:
       "bower_components/bootstrap/dist/js/bootstrap.js"
   ,

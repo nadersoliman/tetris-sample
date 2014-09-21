@@ -24,15 +24,19 @@ angular.module('tetris.controllers', ['tetris.models'])
       @keyDown = ($event)->
         if $event.keyCode in [65, 97, 37]
           @world.enqueAction 'moveLeft'
+          $event.preventDefault()
 
         if $event.keyCode in [68, 100, 39]
           @world.enqueAction 'moveRight'
+          $event.preventDefault()
 
         if $event.keyCode in [87, 119, 38]
           @world.enqueAction 'rotateLeft'
+          $event.preventDefault()
 
         if $event.keyCode in [83, 115, 40]
           @world.enqueAction 'rotateRight'
+          $event.preventDefault()
 
         #console.log $event
 
