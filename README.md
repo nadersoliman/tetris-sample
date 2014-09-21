@@ -16,7 +16,7 @@ bower install
 ## Places of Interest
 
 First you can see the sample in action 
-(here)[https://s3.amazonaws.com/static.kotobkhana.com/tetris-sample/index.html].
+[here](https://s3.amazonaws.com/static.kotobkhana.com/tetris-sample/index.html).
 
 IE is not supported, don't bother. :)
 
