@@ -1,46 +1,63 @@
 angular.module('tetris.controllers', ['tetris.models'])
 
+.factory('BaseController', [
+    ()->
+
+      class BaseController
+
+        constructor: (@$scope) ->
+          @baseMessage = 'I am the base'
+
+      return BaseController
+])
+
 .controller('TetrisController', [
+    '$scope'
     'World'
     'Canvas'
     '$timeout'
     'LPiece'
+    'BaseController'
 
-    (World, Canvas, $timeout, LPiece)->
+    ($scope, World, Canvas, $timeout, LPiece, BaseController)->
 
-      @canvas = new Canvas
-      @world = new World @canvas
+      class TetrisController extends BaseController
 
-      @redraw = ->
-        failed = @world.cycle()
-        if not failed
-          me = @
-          $timeout ->
-            me.redraw()
-          , 700
-        else
-          @message = 'Well Done, Game Over !'
+        constructor: ($scope) ->
+          super($scope)
+          @canvas = new Canvas
+          @world = new World @canvas
+          @redraw()
 
-      @keyDown = ($event)->
-        if $event.keyCode in [65, 97, 37]
-          @world.enqueAction 'moveLeft'
-          $event.preventDefault()
+        redraw: ->
+          failed = @world.cycle()
+          if not failed
+            me = @
+            $timeout ->
+              me.redraw()
+            , 700
+          else
+            @message = 'Well Done, Game Over !'
 
-        if $event.keyCode in [68, 100, 39]
-          @world.enqueAction 'moveRight'
-          $event.preventDefault()
+        keyDown: ($event)->
+          if $event.keyCode in [65, 97, 37]
+            @world.enqueAction 'moveLeft'
+            $event.preventDefault()
 
-        if $event.keyCode in [87, 119, 38]
-          @world.enqueAction 'rotateLeft'
-          $event.preventDefault()
+          if $event.keyCode in [68, 100, 39]
+            @world.enqueAction 'moveRight'
+            $event.preventDefault()
 
-        if $event.keyCode in [83, 115, 40]
-          @world.enqueAction 'rotateRight'
-          $event.preventDefault()
+          if $event.keyCode in [87, 119, 38]
+            @world.enqueAction 'rotateLeft'
+            $event.preventDefault()
 
-        #console.log $event
+          if $event.keyCode in [83, 115, 40]
+            @world.enqueAction 'rotateRight'
+            $event.preventDefault()
 
-      @redraw()
+          #console.log $event
 
-      return @
+
+      return new TetrisController($scope)
 ])
